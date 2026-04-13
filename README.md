@@ -1,7 +1,7 @@
 # ccusage — Claude Usage Dashboard
 
 A local Streamlit dashboard that tracks Claude API usage costs and cache efficiency over time.
-Usage data is collected via the [`ccusage`](https://github.com/ryanhex53/ccusage) CLI and stored in a local SQLite database.
+Usage data is collected via the [`ccusage`](https://github.com/ryoppippi/ccusage) CLI and stored in a local SQLite database.
 
 ![Python](https://img.shields.io/badge/python-3.13+-blue)
 ![Streamlit](https://img.shields.io/badge/streamlit-1.45+-red)
