@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.osmb.ccusage</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/benjaminosmanlic/projekte/ccusage/.venv/bin/streamlit</string>
+        <string>run</string>
+        <string>/Users/benjaminosmanlic/projekte/ccusage/src/ccusage/dashboard.py</string>
+        <string>--server.headless</string>
+        <string>true</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/benjaminosmanlic/projekte/ccusage</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/benjaminosmanlic/projekte/ccusage/tmp/dashboard.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/benjaminosmanlic/projekte/ccusage/tmp/dashboard.err</string>
+</dict>
+</plist>

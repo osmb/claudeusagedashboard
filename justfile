@@ -16,8 +16,12 @@ collect:
 import-history:
     uv run python -m ccusage.importer
 
-# Run all checks (lint + typecheck + tests)
-check: lint typecheck test
+# Run all checks (lint + typecheck + tests + dependency audit)
+check: lint typecheck test audit
+
+# Audit dependencies for known vulnerabilities
+audit:
+    uv audit
 
 # Lint with ruff
 lint:
@@ -45,3 +49,29 @@ deps:
 clean:
     rm -rf tmp/*
     touch tmp/.gitkeep
+
+# Install dashboard as macOS background service (auto-starts at login)
+service-install:
+    cp launchd/com.osmb.ccusage.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.osmb.ccusage.plist
+    @echo "Service installed. Dashboard available at http://localhost:8501"
+
+# Remove dashboard service
+service-uninstall:
+    launchctl unload ~/Library/LaunchAgents/com.osmb.ccusage.plist
+    rm -f ~/Library/LaunchAgents/com.osmb.ccusage.plist
+    @echo "Service removed."
+
+# Start dashboard service manually
+service-start:
+    launchctl start com.osmb.ccusage
+
+# Stop dashboard service
+service-stop:
+    launchctl stop com.osmb.ccusage
+
+# Show service status and last log lines
+service-status:
+    @launchctl list | grep ccusage || echo "Service not running"
+    @echo "--- last 20 log lines ---"
+    @tail -20 tmp/dashboard.log 2>/dev/null || echo "(no log yet)"
