@@ -1,0 +1,54 @@
+[project]
+name = "ccusage"
+version = "0.1.0"
+description = "Claude API usage tracker with Streamlit dashboard"
+requires-python = ">=3.13"
+dependencies = [
+    "streamlit>=1.45.0",
+    "pandas>=2.2.0",
+    "plotly>=6.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.11.0",
+    "ty>=0.0.1",
+    "deptry>=0.22.0",
+]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "F", "E", "W", "I", "UP", "B", "SIM", "RUF", "A", "C90",
+    "ANN", "TCH",
+    "S", "BLE",
+    "N", "EM", "TRY", "RET", "ARG", "PT", "PTH",
+    "LOG", "G",
+    "ERA",
+]
+ignore = [
+    "TRY003",  # long exception messages OK
+    "G004",    # f-string in logging OK for this project
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ANN", "S101"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=src/ccusage --cov-report=term-missing --cov-branch"
+
+[tool.coverage.run]
+branch = true
+# dashboard.py is a Streamlit entry point — top-level code runs on import,
+# making it incompatible with unit testing without a full Streamlit harness.
+omit = ["src/ccusage/dashboard.py"]
+
+[tool.coverage.report]
+fail_under = 80
