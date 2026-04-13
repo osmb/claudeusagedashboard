@@ -75,3 +75,8 @@ service-status:
     @launchctl list | grep ccusage || echo "Service not running"
     @echo "--- last 20 log lines ---"
     @tail -20 tmp/dashboard.log 2>/dev/null || echo "(no log yet)"
+
+# Create or update the desktop app icon (opens dashboard in browser, no terminal)
+desktop-icon:
+    osacompile -o ~/Desktop/"Claude Dashboard.app" launchd/dashboard_launcher.applescript
+    @echo "Icon created: ~/Desktop/Claude Dashboard.app"
