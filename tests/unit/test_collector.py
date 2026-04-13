@@ -104,3 +104,33 @@ class TestRunCollector:
             pytest.raises(CollectorError, match="invalid JSON"),
         ):
             run_collector(config)
+
+    def test_handles_empty_daily_response(self, tmp_path: Path) -> None:
+        config = make_config(tmp_path)
+        mock_result = MagicMock()
+        mock_result.stdout = json.dumps({"daily": []})
+
+        with patch("ccusage.collector.subprocess.run", return_value=mock_result):
+            run_collector(config)  # must not raise
+
+        from ccusage.db import get_connection
+
+        with get_connection(config.db_path) as conn:
+            count = conn.execute("SELECT COUNT(*) FROM usage_stats").fetchone()[0]
+        assert count == 0
+
+    def test_rerun_replaces_existing_date_rows(self, tmp_path: Path) -> None:
+        """A second run for the same date must replace, not duplicate, the existing rows."""
+        config = make_config(tmp_path)
+        mock_result = MagicMock()
+        mock_result.stdout = DAILY_RESPONSE_WITH_BREAKDOWNS
+
+        with patch("ccusage.collector.subprocess.run", return_value=mock_result):
+            run_collector(config)
+            run_collector(config)
+
+        from ccusage.db import get_connection
+
+        with get_connection(config.db_path) as conn:
+            rows = conn.execute("SELECT * FROM usage_stats").fetchall()
+        assert len(rows) == 1

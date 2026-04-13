@@ -68,6 +68,27 @@ class TestLoadData:
         assert pd.api.types.is_datetime64_any_dtype(result["date"])
         assert result.iloc[0]["cache_read_tokens"] == 100
 
+    def test_loads_legacy_db_without_cache_columns(self, tmp_path: Path) -> None:
+        """get_connection migrates legacy DBs; load_data must return rows with cache columns = 0."""
+        db = tmp_path / "legacy.db"
+        # Create the old schema without cache columns
+        conn = sqlite3.connect(db)
+        conn.execute(
+            "CREATE TABLE usage_stats "
+            "(date TEXT, model TEXT, input_tokens INTEGER, output_tokens INTEGER, total_cost REAL)"
+        )
+        conn.execute(
+            "INSERT INTO usage_stats VALUES (?, ?, ?, ?, ?)",
+            ("2024-01-15", "claude-3", 1000, 200, 0.005),
+        )
+        conn.commit()
+        conn.close()
+        # load_data calls get_connection internally, which runs ensure_schema (ALTER TABLE)
+        result = load_data(db)
+        assert len(result) == 1
+        assert result.iloc[0]["cache_creation_tokens"] == 0
+        assert result.iloc[0]["cache_read_tokens"] == 0
+
 
 # ── apply_filters ─────────────────────────────────────────────────────────────
 

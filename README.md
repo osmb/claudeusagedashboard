@@ -16,7 +16,7 @@ Usage data is collected via the [`ccusage`](https://github.com/ryanhex53/ccusage
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/YOUR_USERNAME/ccusage.git
+git clone https://github.com/osmb/ccusage.git
 cd ccusage
 
 # 2. Install Python dependencies

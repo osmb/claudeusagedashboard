@@ -59,6 +59,6 @@ def import_history(config: Config) -> None:
     logger.info(f"Imported {len(weekly_entries)} weekly entries")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     import_history(load_config())

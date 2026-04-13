@@ -34,8 +34,6 @@ def load_data(db_path: Path) -> pd.DataFrame:
 
     df["date"] = pd.to_datetime(df["date"], format="mixed")
     for col in ("cache_creation_tokens", "cache_read_tokens"):
-        if col not in df.columns:
-            df[col] = 0
         df[col] = df[col].fillna(0).astype(int)
 
     return df

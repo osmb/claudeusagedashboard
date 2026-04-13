@@ -123,9 +123,6 @@ with st.sidebar:
 
     models = ["Alle", *sorted(df["model"].unique().tolist())]
     selected_model = st.selectbox("Modell", models)
-    st.markdown("---")
-    if st.button("🔄 Aktualisieren"):
-        st.rerun()
 
 # cast: pd.Timestamp() stubs include NaTType; we guarantee Timestamp | None here
 fdf = apply_filters(

@@ -40,3 +40,8 @@ test:
 # Check for unused dependencies
 deps:
     uv run deptry src/
+
+# Remove disposable scratch files
+clean:
+    rm -rf tmp/*
+    touch tmp/.gitkeep
